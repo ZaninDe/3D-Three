@@ -5,9 +5,10 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 interface SceneProps  {
   onChangeObject: (object: any) => void
+  texture: string
 }
 
-export const Scene = ({ onChangeObject }: SceneProps) => {
+export const Scene = ({ onChangeObject, texture }: SceneProps) => {
   const { scene } = useLoader(GLTFLoader, './models/patriani_refatorado.glb')
 
   const changeColor = (object: any) => {
