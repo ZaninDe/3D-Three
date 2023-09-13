@@ -10,21 +10,14 @@ export default function Home() {
   const [currentObject, setCurrentObject] = useState<any>()
 
   useEffect(() => {
-    if (currentObject) {
-      const currentValue = currentObject.name;
-
-      const index = Object.keys(OBJECTS[0]).find(key => key === currentValue);
-
-      if (index) {
-        setTextures(OBJECTS[0][index])
-      }
-    }
+    if (currentObject) 
+      console.log(currentObject.name)
   }, [currentObject])
   return (
     <div className="w-screen h-screen">
       {
-        textures && (
-          <div>AQUI VAI AS OPCOES!!!</div>
+        currentObject && (
+          <div>AQUI VAI AS OPCOES PARA CUSTOMIZAR O ELEMENTO {currentObject.name}</div>
         )
       }
       <Canvas dpr={[2, 1]} camera={{ fov: 50 }}>
