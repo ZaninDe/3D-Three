@@ -1,5 +1,5 @@
 export const OBJECTS = {
-    mesh_95_1: {
+  mesh_95_1: {
       smooth: [
         '/models/textures/Metal030_1K_Color.jpg',
         '/models/textures/Metal030_1K_NormalGL.jpg',
