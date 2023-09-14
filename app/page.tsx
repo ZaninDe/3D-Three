@@ -5,6 +5,7 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { OBJECTS } from "./data/Objects";
 import  Image from 'next/image'
+import { OBJECTSTEXTURE } from "./data/ObjectsTextures";
 
 export default function Home() {
   const [textures, setTextures] = useState<any>([])
@@ -13,26 +14,13 @@ export default function Home() {
   const [textureObj, settextureObj] = useState({})
 
   useEffect(() => {
-    if (currentObject && OBJECTS[currentObject?.name]) {
-      setTextures(OBJECTS[currentObject?.name])
+    if (currentObject && OBJECTSTEXTURE[currentObject?.name]) {
+      setTextures(OBJECTSTEXTURE[currentObject?.name])
     } else {
       setTextures([])
       setCurrentObject(undefined)
     }
   }, [currentObject])
-
-  useEffect(() => {
-    if(currentTexture) {
-      settextureObj( {
-      map: currentTexture[0],
-      normalMap: currentTexture[1],
-      roughnessMap: currentTexture[2],
-      metalnessMap: currentTexture[3],
-    })
-    console.log(textureObj)
-    }
-
-  },[currentTexture])
   return (
     <div className="w-screen h-screen">
       {
@@ -42,7 +30,7 @@ export default function Home() {
              Object.keys(textures).map((item) => (
               <div key={item} className="cursor-pointer" onClick={() => setCurrentTexture(textures[item])}>
                 <Image 
-                  src={textures[item][0]} 
+                  src={textures[item]} 
                   alt="texture image" 
                   width={100} 
                   height={100}
@@ -56,7 +44,7 @@ export default function Home() {
       }
       <Canvas dpr={[2, 1]} camera={{ fov: 50 }}>
         <Suspense fallback={null}>
-          <Scene onChangeObject={setCurrentObject} texture={textureObj} selectedObject={currentObject}/>
+          <Scene onChangeObject={setCurrentObject} texture={currentTexture} selectedObject={currentObject}/>
         </Suspense>
         <OrbitControls enableZoom={true} enablePan={true} />
       </Canvas>
