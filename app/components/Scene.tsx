@@ -1,9 +1,9 @@
 'use client'
 import { Stage, useTexture } from "@react-three/drei"
 import { useLoader } from "@react-three/fiber"
-import { useEffect, useLayoutEffect, useState } from "react"
+import { useEffect, useRef } from "react"
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import { TextureLoader, MeshBasicMaterial, RepeatWrapping } from 'three';
+import { TextureLoader, MeshBasicMaterial, RepeatWrapping, BoxGeometry, Mesh } from 'three';
 import { OBJECTS } from "../data/Objects"
 
 interface SceneProps {
@@ -14,10 +14,21 @@ interface SceneProps {
 
 export const Scene = ({ onChangeObject, texture, selectedObject }: SceneProps) => {
   const { scene, nodes } = useLoader(GLTFLoader, './models/patriani_refatorado.glb')
+  
 
+  function replaceNode(object: any) {
+    const nodeToReplace = object;
+    if (nodeToReplace) {
+      nodeToReplace.parent.remove(nodeToReplace);
+      const newNode = new Mesh(new BoxGeometry(1, 1, 1), new MeshBasicMaterial({ color: 0xff0000 }));
+      newNode.position.copy(nodeToReplace.position);
+      newNode.rotation.copy(nodeToReplace.rotation);
+      scene.add(newNode);
+    }
+  }
+  
   useEffect(() => {
     if(selectedObject && texture) {
-      console.log(texture)
       const newTexture = new TextureLoader().load(texture);
       newTexture.repeat.set(8, 8);
       newTexture.wrapS = RepeatWrapping;
@@ -31,9 +42,6 @@ export const Scene = ({ onChangeObject, texture, selectedObject }: SceneProps) =
     }
   }, [selectedObject, texture])
 
-  useEffect(() => {
-    console.log(selectedObject?.name)
-  },[selectedObject, nodes])
 
   return (
     <Stage adjustCamera intensity={1}>

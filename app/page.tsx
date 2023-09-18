@@ -13,18 +13,39 @@ export default function Home() {
   const [currentObject, setCurrentObject] = useState<any>()
   const [textureObj, settextureObj] = useState({})
 
+  function handleObjectChange(object: any) {
+     // @ts-ignore
+     if (OBJECTSTEXTURE[object?.name]) {
+      console.log(object)
+      // @ts-ignore
+
+      setTextures(OBJECTSTEXTURE[object?.name])
+      setCurrentObject(object)
+
+      } else {
+        setTextures([])
+        setCurrentObject(undefined)
+      }
+  }
+
   useEffect(() => {
-    if (currentObject && OBJECTSTEXTURE[currentObject?.name]) {
-      setTextures(OBJECTSTEXTURE[currentObject?.name])
-    } else {
-      setTextures([])
-      setCurrentObject(undefined)
-    }
+    console.log(currentTexture)
   }, [currentObject])
+
+  // useEffect(() => {
+  //   // @ts-ignore
+  //   if (currentObject && OBJECTSTEXTURE[currentObject?.name]) {
+  //   // @ts-ignore
+  //     setTextures(OBJECTSTEXTURE[currentObject?.name])
+  //   } else {
+  //     setTextures([])
+  //     setCurrentObject(undefined)
+  //   }
+  // }, [currentObject])
   return (
     <div className="w-screen h-screen">
       {
-        currentObject && textures &&(
+        currentObject && textures && (
           <div className="absolute top-10 left-10 flex flex-col gap-4 z-10">
             {
              Object.keys(textures).map((item) => (
@@ -44,7 +65,7 @@ export default function Home() {
       }
       <Canvas dpr={[2, 1]} camera={{ fov: 50 }}>
         <Suspense fallback={null}>
-          <Scene onChangeObject={setCurrentObject} texture={currentTexture} selectedObject={currentObject}/>
+          <Scene onChangeObject={handleObjectChange} texture={currentTexture} selectedObject={currentObject}/>
         </Suspense>
         <OrbitControls enableZoom={true} enablePan={true} />
       </Canvas>

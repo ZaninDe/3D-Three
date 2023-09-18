@@ -15,7 +15,6 @@ export const Model = () => {
 
 
   function changeColor(object: any) {
-    console.log(object.name)
     const texture = new TextureLoader().load('./models/textures/Material_baseColor.jpeg');
     const material = new MeshBasicMaterial({
       map: texture,
