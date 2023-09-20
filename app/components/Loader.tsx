@@ -1,31 +1,27 @@
-import { Html, useProgress } from "@react-three/drei";
+'use client'
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei"
+import { Canvas } from "@react-three/fiber"
+import { ReactNode, Suspense } from "react"
 
-const CanvasLoader = () => {
-  const { progress } = useProgress();
+interface LoaderProps {
+  children: ReactNode
+}
+
+export const Common = ({ color = 'white' }: { color?: string }) => (
+  <Suspense fallback={null}>
+    {color && <color attach='background' args={[color]} />}
+    <ambientLight intensity={0.5} />
+    <pointLight position={[20, 30, 10]} intensity={1} />
+    <pointLight position={[-10, -10, -10]} color='blue' />
+    <PerspectiveCamera makeDefault fov={20} position={[-15, 0, -2]} />
+  </Suspense>
+)
+
+export const Loader = ({ children }: LoaderProps) => {
   return (
-    <Html
-      as='div'
-      center
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        flexDirection: "column",
-      }}
-    >
-      <span className='canvas-loader'></span>
-      <p
-        style={{
-          fontSize: 14,
-          color: "#F1F1F1",
-          fontWeight: 800,
-          marginTop: 40,
-        }}
-      >
-        {progress.toFixed(2)}%
-      </p>
-    </Html>
-  );
-};
-
-export default CanvasLoader;
+    <Canvas gl={{ preserveDrawingBuffer: true }}>
+      <mesh>{children}</mesh>
+      <OrbitControls enableZoom={true} enablePan={true} />
+    </Canvas>
+  )
+}
