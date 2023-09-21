@@ -7,8 +7,18 @@ import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js'
 export const Model = forwardRef(function Model({}, ref) {
   const modelRef = useRef()
   const { scene } = useGLTF('/models/patriani_refatorado.glb')
-  const customObject = useGLTF('/models/torneira.gltf')
+  const customObject = useGLTF('/models/modern_kitchen_tap.glb')
   const { camera, gl } = useThree()
+
+  const handleClick = (e: any) => {
+    const currentObj = e.object
+    console.log(e.object)
+    if(currentObj.name === 'mesh_57') {
+      scene.add(customObject.scene)
+      currentObj.parent.remove(currentObj)
+      customObject.scene.position.set(e.point.x, e.point.y, e.point.z)
+    }
+  }
 
   useImperativeHandle(ref, () => {
     return {
@@ -30,6 +40,6 @@ export const Model = forwardRef(function Model({}, ref) {
   })
 
   return (
-    <primitive object={scene} ref={ref} />
+    <primitive object={scene} ref={ref} onClick={handleClick}/>
     )
 })

@@ -5,22 +5,23 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { OBJECTS } from "./data/Objects";
 import  Image from 'next/image'
-import { OBJECTSTEXTURE } from "./data/ObjectsTextures";
+import { TEXTURES } from "./data/Textures";
+import { CUSTOMOBJECTS } from "./data/CustomObjects";
 
 export default function Home() {
   const [textures, setTextures] = useState<any>([])
+  const [customObj, setCustomObj] = useState()
   const [currentTexture, setCurrentTexture] = useState<string[]>()
   const [currentObject, setCurrentObject] = useState<any>()
   const [textureObj, settextureObj] = useState({})
 
-  function handleObjectChange(object: any) {
+  function handleObjectChange(e: any) {
+    console.log(e.object?.name)
      // @ts-ignore
-     if (OBJECTSTEXTURE[object?.name]) {
-      console.log(object)
+     if (TEXTURES[e.object?.name]) {
       // @ts-ignore
-
-      setTextures(OBJECTSTEXTURE[object?.name])
-      setCurrentObject(object)
+      setTextures(TEXTURES[e.object?.name])
+      setCurrentObject(e.object)
 
       } else {
         setTextures([])
@@ -28,20 +29,6 @@ export default function Home() {
       }
   }
 
-  useEffect(() => {
-    console.log(currentTexture)
-  }, [currentObject])
-
-  // useEffect(() => {
-  //   // @ts-ignore
-  //   if (currentObject && OBJECTSTEXTURE[currentObject?.name]) {
-  //   // @ts-ignore
-  //     setTextures(OBJECTSTEXTURE[currentObject?.name])
-  //   } else {
-  //     setTextures([])
-  //     setCurrentObject(undefined)
-  //   }
-  // }, [currentObject])
   return (
     <div className="w-screen h-screen">
       {
@@ -65,7 +52,7 @@ export default function Home() {
       }
       <Canvas dpr={[2, 1]} camera={{ fov: 50 }}>
         <Suspense fallback={null}>
-          <Scene onChangeObject={handleObjectChange} texture={currentTexture} selectedObject={currentObject}/>
+          <Scene onChangeObject={handleObjectChange} customObject={customObj} texture={currentTexture} selectedObject={currentObject}/>
         </Suspense>
         <OrbitControls enableZoom={true} enablePan={true} />
       </Canvas>

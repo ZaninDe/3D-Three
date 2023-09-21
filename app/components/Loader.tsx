@@ -10,10 +10,10 @@ interface LoaderProps {
 export const Common = ({ color = 'white' }: { color?: string }) => (
   <Suspense fallback={null}>
     {color && <color attach='background' args={[color]} />}
-    <ambientLight intensity={0.5} />
+    <ambientLight intensity={0.7} />
     <pointLight position={[20, 30, 10]} intensity={1} />
-    <pointLight position={[-10, -10, -10]} color='blue' />
-    <PerspectiveCamera makeDefault fov={20} position={[-15, 0, -2]} />
+    <pointLight position={[10, 10, 10]} color='blue' />
+    <PerspectiveCamera makeDefault fov={20} position={[-15, 0, -25]} />
   </Suspense>
 )
 
